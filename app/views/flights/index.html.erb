@@ -1,0 +1,22 @@
+<ul>
+	<%= form_tag flights_path, method: :get do %>
+		<li>
+			<%= label_tag "FROM" %>
+			<%= select(:flight, :start_location, @start_locations)  %>
+		</li>
+		<li>
+			<%= label_tag "TO" %>
+			<%= select(:flight, :destination, @destinations) %>
+		</li>
+		<li>
+			<%= label_tag "Passengers" %>
+			<%= select(:flight, :num_passengers, [1,2,3,4]) %>
+		</li>
+		<li>
+			<%= select_tag "departure", options_from_collection_for_select(@departure_times, 'departure_time', :departure_time_formatted) %>
+		</li>
+		<li>
+			<%= button_tag "Submit" %>
+		</li>
+	<% end %>
+</ul>
