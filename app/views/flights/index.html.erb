@@ -1,22 +1,32 @@
 <ul>
 	<%= form_tag flights_path, method: :get do %>
-		<li>
-			<%= label_tag "FROM" %>
-			<%= select(:flight, :start_location, @start_locations)  %>
-		</li>
-		<li>
-			<%= label_tag "TO" %>
-			<%= select(:flight, :destination, @destinations) %>
-		</li>
-		<li>
-			<%= label_tag "Passengers" %>
-			<%= select(:flight, :num_passengers, [1,2,3,4]) %>
-		</li>
-		<li>
-			<%= select_tag "departure", options_from_collection_for_select(@departure_times, 'departure_time', :departure_time_formatted) %>
-		</li>
-		<li>
-			<%= button_tag "Submit" %>
-		</li>
+		<% fields_for :search do |f| %>
+			<li>
+				<%= f.label "FROM" %>
+				<%= f.select(:start_location, options_for_select(@start_locations))  %>
+			</li>
+			<li>
+				<%= f.label "TO" %>
+				<%= f.select(:destination, options_for_select(@destinations)) %>
+			</li>
+			<li>
+				<%= f.label "Passengers" %>
+				<%= f.select(:num_passengers, options_for_select(@num_passengers) ) %>
+			</li>
+			<li>
+				<%= f.select("departure_time", options_from_collection_for_select(@departure_times, :departure_time, :departure_time_formatted)) %>
+			</li>
+			<li>
+				<%= f.submit "Submit", name: nil %>
+			</li>
+		<% end %>
 	<% end %>
 </ul>
+
+<% if @results %>
+	<% @results.each do |result| %>
+		<%=  result.start_location.code %>
+		<%= result.destination.code %>
+		<%= result.departure_time %>
+	<% end %>
+<% end %>
