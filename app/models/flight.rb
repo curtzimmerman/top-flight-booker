@@ -10,9 +10,13 @@ class Flight < ActiveRecord::Base
 	end
 
 	def self.search(params)
-		if params
-			Flight.where(
-								"start_location_id = ? AND destination_id = ? AND departure_time BETWEEN ? AND ?", params[:start_location], params[:destination], params[:departure_time].to_date.beginning_of_day, params["departure_time"].to_date.end_of_day)
+		if params.has_key?(:departure_time)
+			range = (params[:departure_time].to_date.beginning_of_day..params[:departure_time].to_date.end_of_day)
+			result = Flight.where(departure_time: range)
+			params.delete(:departure_time)
+			result.where(params)
+		else
+			Flight.where(params)
 		end
 	end
 end

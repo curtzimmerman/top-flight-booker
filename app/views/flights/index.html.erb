@@ -3,18 +3,18 @@
 		<% fields_for :search do |f| %>
 			<li>
 				<%= f.label "FROM" %>
-				<%= f.select(:start_location, options_for_select(@start_locations))  %>
+				<%= f.select(:start_location, options_for_select(@start_locations), include_blank: true)  %>
 			</li>
 			<li>
 				<%= f.label "TO" %>
-				<%= f.select(:destination, options_for_select(@destinations)) %>
+				<%= f.select(:destination, options_for_select(@destinations), include_blank: true) %>
 			</li>
 			<li>
 				<%= f.label "Passengers" %>
 				<%= f.select(:num_passengers, options_for_select(@num_passengers) ) %>
 			</li>
 			<li>
-				<%= f.select("departure_time", options_from_collection_for_select(@departure_times, :departure_time, :departure_time_formatted)) %>
+				<%= f.select("departure_time", options_from_collection_for_select(@departure_times, :departure_time, :departure_time_formatted), include_blank: true) %>
 			</li>
 			<li>
 				<%= f.submit "Submit", name: nil %>
@@ -24,9 +24,15 @@
 </ul>
 
 <% if @results %>
+	<ul>
 	<% @results.each do |result| %>
-		<%=  result.start_location.code %>
-		<%= result.destination.code %>
-		<%= result.departure_time %>
+		<h1>Flight</h1>
+		<ul>
+			<li>From: <%=  result.start_location.code %></li>
+			<li>To: <%= result.destination.code %></li>
+			<li>On: <%= result.departure_time %></li>
+			<li>Duration: <%= distance_of_time_in_words(result.flight_duration_in_seconds) %></li>
+		</ul>
 	<% end %>
+	</ul>
 <% end %>

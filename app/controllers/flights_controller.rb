@@ -6,10 +6,20 @@ class FlightsController < ApplicationController
 		@departure_times = @flights.all.order("departure_time ASC")
 		@num_passengers = (1..4).map { |n| [n,n] }
 
-		@results = Flight.search(params[:search])
+		conditions = {}
+		if params.has_key?(:search)
+			conditions[:start_location] = params[:search][:start_location] unless params[:search][:start_location].blank?
+			conditions[:destination] = params[:search][:destination] unless params[:search][:destination].blank?
+			conditions[:departure_time] = params[:search][:departure_time] unless params[:search][:departure_time].blank?
+			
+			@results = Flight.search(conditions)
+		end
 	end
 
 	private
 
+		def search_params
+			params.require(:search).permit(:start_location, :destination, :departure_time, :num_passengers)
+		end
 
 end
