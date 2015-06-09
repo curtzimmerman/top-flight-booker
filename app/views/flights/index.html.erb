@@ -25,14 +25,17 @@
 
 <% if @results %>
 	<ul>
-	<% @results.each do |result| %>
-		<h1>Flight</h1>
-		<ul>
-			<li>From: <%=  result.start_location.code %></li>
-			<li>To: <%= result.destination.code %></li>
-			<li>On: <%= result.departure_time %></li>
-			<li>Duration: <%= distance_of_time_in_words(result.flight_duration_in_seconds) %></li>
-		</ul>
+	<%= fields_for :bookings do |booking| %>
+		<% @results.each do |result| %>
+			<h1>Flight</h1>
+			<%= booking.radio_button %>
+			<ul>
+				<li>From: <%=  result.start_location.code %></li>
+				<li>To: <%= result.destination.code %></li>
+				<li>On: <%= result.departure_time %></li>
+				<li>Duration: <%= distance_of_time_in_words(result.flight_duration_in_seconds) %></li>
+			</ul>
+		<% end %>
 	<% end %>
 	</ul>
 <% end %>
