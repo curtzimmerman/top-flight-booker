@@ -1,0 +1,10 @@
+Flight From: <%= @booking.flight.start_location.code %>
+to <%= @booking.flight.destination.code %>
+<%= @booking.flight.departure_time %>
+
+<% @booking.passengers.each do |passenger| %>
+	<p>
+		<%= passenger.name %>
+		<%= passenger.email %>
+	</p>
+<% end %>

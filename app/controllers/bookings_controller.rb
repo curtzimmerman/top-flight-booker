@@ -11,17 +11,21 @@ class BookingsController < ApplicationController
 		@booking = Booking.new(booking_params)
 		if @booking.save
 			flash[:success] = "Successfully created"
-			redirect_to root_path
+			redirect_to @booking
 		else
 			flash.now[:danger] = "Error"
 			render 'new'
 		end
 	end
 
+	def show
+		@booking = Booking.find(params[:id])
+	end
+
 
 	private
 
 		def booking_params
-			params.require(:booking).permit(:flight_id, passengers_attributes: [:id, :name, :email])
+			params.require(:booking).permit(:id, :flight_id, passengers_attributes: [:id, :name, :email])
 		end
 end
