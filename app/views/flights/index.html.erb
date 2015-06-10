@@ -1,17 +1,17 @@
 <ul>
 	<%= form_tag flights_path, method: :get do %>
-		<% fields_for :search do |f| %>
+		<%= fields_for :search do |f| %>
 			<li>
 				<%= f.label "FROM" %>
 				<%= f.select(:start_location, options_for_select(@start_locations), include_blank: true)  %>
 			</li>
 			<li>
 				<%= f.label "TO" %>
-				<%= f.select(:destination, options_for_select(@destinations), include_blank: true) %>
+				<%= f.select(:destination, @destinations, include_blank: true) %>
 			</li>
 			<li>
 				<%= f.label "Passengers" %>
-				<%= f.select(:num_passengers, options_for_select(@num_passengers) ) %>
+				<%= f.select(:num_passengers, @num_passengers ) %>
 			</li>
 			<li>
 				<%= f.select("departure_time", options_from_collection_for_select(@departure_times, :departure_time, :departure_time_formatted), include_blank: true) %>
@@ -25,10 +25,11 @@
 
 <% if @results %>
 	<ul>
-	<%= fields_for :bookings do |booking| %>
+	<%= form_tag new_booking_path, method: :get do %>
+		<%= hidden_field_tag :num_passengers, params[:search][:num_passengers] %>
 		<% @results.each do |result| %>
 			<h1>Flight</h1>
-			<%= booking.radio_button %>
+			<%= radio_button_tag :flight_id, result.id %>
 			<ul>
 				<li>From: <%=  result.start_location.code %></li>
 				<li>To: <%= result.destination.code %></li>
@@ -36,6 +37,7 @@
 				<li>Duration: <%= distance_of_time_in_words(result.flight_duration_in_seconds) %></li>
 			</ul>
 		<% end %>
-	<% end %>
+		<%= submit_tag "Select Flight", name: nil %>
+	<% end %>		
 	</ul>
 <% end %>

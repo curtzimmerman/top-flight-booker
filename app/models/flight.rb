@@ -4,7 +4,6 @@ class Flight < ActiveRecord::Base
 	belongs_to :destination, class_name: "Airport"
 	has_many :bookings
 	has_many :passengers, through: :bookings
-	accepts_nested_attributes_for :bookings
 
 	attr_accessor :num_passengers
 
