@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  	<h1>Thanks for booking a flight, <%= @passenger.name %></h1>
+  	<p>
+  		To: <%= @booking.flight.destination.code %>
+  		From: <%= @booking.flight.start_location.code %>
+		</p>
+		<p>
+			To make another booking, follow this link: <%= link_to "Bookings", @url %>.
+		</p>
+  </body>
+</html>
